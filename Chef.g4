@@ -1,4 +1,8 @@
-/** Chef programming language  */
+/**
+ * Chef programming language
+ * @author y_a_v_a
+ * @license wtfpl v2
+ */
 
 grammar Chef;
 

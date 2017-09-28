@@ -27,3 +27,8 @@ $ node index.js
 * http://www.dangermouse.net/esoteric/chef.html
 * https://github.com/antlr/antlr4/blob/master/doc/javascript-target.md
 * https://github.com/maxbelanger/ratatouille/tree/master/grammar
+
+
+## License
+
+wftpl license applies to code originally written by @y-a-v-a as stated in the applicable files. Source: http://www.wtfpl.net/txt/copying/

@@ -1,3 +1,8 @@
+/**
+ * @author y_a_v_a
+ * @license wtfpl v2
+ * copyleft 2017 - no wrongs reversed
+ */
 const antlr4 = require('antlr4');
 const fs = require('fs');
 const ChefLexer = require('./ChefLexer');
