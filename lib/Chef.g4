@@ -1,21 +1,31 @@
 /**
- * Chef programming language
+ * Chef programming language grammar
+ *
  * @author y_a_v_a
  * @license wtfpl v2
+ * copyleft 2017 - no wrongs reversed
  */
 
 grammar Chef;
 
 program
-  : title comments? ingredients method serves (program)? NEWLINE EOF
+  : recipe serves (NEWLINE auxiliary)? (NEWLINE)? EOF
+  ;
+
+recipe
+  : title comments? ingredients method
+  ;
+
+auxiliary
+  : recipe
   ;
 
 title
-  : (WORD)+ PERIOD divider
+  : (WORD)+ PERIOD NEWLINE
   ;
 
 comments
-  : (WORD | PERIOD | 'the')+ divider
+  : NEWLINE (WORD | INT | PERIOD)+ divider
   ;
 
 ingredients
@@ -23,11 +33,7 @@ ingredients
   ;
 
 ingredient
-  : value? measureType? measure? ingredientLabel NEWLINE
-  ;
-
-value
-  : INT
+  : INT? measureType? measure? ingredientLabel NEWLINE
   ;
 
 measureType
@@ -75,8 +81,24 @@ method
 statement
   : stdin
   | put
+  | fold
+  | add
+  | remove
+  | combine
+  | divide
+  | addDry
+  | liquefyIngredient
   | liquefy
+  | stirBowl
+  | stir
+  | mix
+  | clean
   | pour
+  | loopStart
+  | loopEnd
+  | setAside
+  | serveWith
+  | refrigerate
   ;
 
 stdin
@@ -84,20 +106,83 @@ stdin
   ;
 
 put
-  : 'Put' ingredientLabel 'into' nth 'mixing bowl.'
+  : 'Put' ingredientLabel 'into' ('the' | nth)? 'mixing bowl.'
+  ;
+
+fold
+  : 'Fold' ingredientLabel 'into' ('the' | nth)? 'mixing bowl.'
+  ;
+
+add
+  : 'Add' ingredientLabel ('to' ('the' | nth)? 'mixing bowl')? '.'
+  ;
+
+remove
+  : 'Remove' ingredientLabel ('from' ('the' | nth)? 'mixing bowl')? '.'
+  ;
+
+combine
+  : 'Combine' ingredientLabel ('into' ('the' | nth)? 'mixing bowl')? '.'
+  ;
+
+divide
+  : 'Divide' ingredientLabel ('into' ('the' | nth)? 'mixing bowl')? '.'
+  ;
+
+addDry
+  : 'Add dry ingredients' ('to' ('the' | nth)? 'mixing bowl')? '.'
+  ;
+
+liquefyIngredient
+  : ('Liquefy' | 'Liquify') ingredientLabel '.'
   ;
 
 liquefy
-  : ('Liquefy' | 'Liquify') 'contents of' nth 'mixing bowl.'
+  : ('Liquefy' | 'Liquify') 'contents of' ('the' | nth)? 'mixing bowl.'
+  ;
+
+stirBowl
+  : 'Stir' (('the' | nth)? 'mixing bowl')? 'for' INT 'minutes.'
+  ;
+
+stir
+  : 'Stir' ingredientLabel 'into' ('the' | nth)? 'mixing bowl.'
+  ;
+
+mix
+  : 'Mix' (('the' | nth)? 'mixing bowl')? 'well.'
+  ;
+
+clean
+  : 'Clean' ('the' | nth)? 'mixing bowl.'
   ;
 
 pour
-  : 'Pour contents of' nth 'mixing bowl into' pth 'baking dish.'
+  : 'Pour contents of' ('the' | nth)? 'mixing bowl into' ('the' | pth)? 'baking dish.'
+  ;
+
+loopStart
+  : verb 'the' ingredientLabel '.'
+  ;
+
+loopEnd
+  : verb ('the' ingredientLabel) 'until' verbed '.'
+  ;
+
+setAside
+  : 'Set aside.'
+  ;
+
+serveWith
+  : 'Serve with' WORD '.'
+  ;
+
+refrigerate
+  : 'Refrigerate' ('for' INT 'hours')? '.'
   ;
 
 nth
-  : 'the'
-  | INT 'st'
+  : INT 'st'
   | INT 'nd'
   | INT 'rd'
   | INT 'th'
@@ -119,8 +204,16 @@ divider
   : NEWLINE NEWLINE
   ;
 
+verb
+  : WORD
+  ;
+
+verbed
+  : verb 'ed'
+  ;
+
 WORD
-  : ('a' .. 'z' | 'A' .. 'Z' | '!' | '"' | ',')+
+  : ('a' .. 'z' | 'A' .. 'Z' | '!' | '"' | ',' | '-')+
   ;
 
 INT
